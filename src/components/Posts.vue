@@ -1,9 +1,21 @@
 <template>
   <div id="app">
+    <h2>Post</h2>
     <div v-if="hasResult">
-      <div v-for="post in posts" v-bind:key="post.id">
-        <p>{{post}}</p>
+      <div >
+        <table border="1">
+          <th>제목</th>
+          <th>작성자</th>
+          <th>작성일</th>
+          <tr v-for="post in posts" v-bind:key="post.postId" @click="postDetailPage(post.postId)" style="cursor:pointer">
+            <td>{{post.title}}</td>
+            <td>{{post.writer}}</td>
+            <td>{{post.createdAt}}</td>
+          </tr>
+        </table>
+        <button v-on:click="createPostPage">글 작성하기</button>
       </div>
+      
     </div>
     <button v-else v-on:click="getPosts">글 불러오기</button>
   </div>
@@ -26,12 +38,7 @@ export default {
   },
   methods: {
     getPosts: function () {
-      axios.get('http://localhost:8080/posts'/* , {
-                      headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json; charset = utf-8'
-                      }
-                    } */)
+      axios.get('http://localhost:8080/posts')
           .then((result) => {
             console.log(result);
             this.posts = result.data.contents;
@@ -39,6 +46,13 @@ export default {
           .catch(e => {
             console.log('error:', e)
           });
+    },
+    createPostPage: function(event){
+      this.$router.push('/post-form')
+    },
+    postDetailPage(postId){
+      this.$router.push({name: 'PostDetail', params: {postid: postId}})
+      //this.$router.push('/post-detail')
     }
   },
   mounted () {
