@@ -5,6 +5,11 @@
            <input type="password" v-model="user.password" placeholder="PassWord"/>
            <input type="submit" value="로그인"/>
        </form>
+       <div>
+           <!-- <a href="http://localhost:8080/oauth2/authorize/naver">Naver</a> <br>
+           <a href="http://localhost:8080/oauth2/authorize/google">Google</a> -->
+           <a @click='oauthpage'>naver</a>
+       </div>
     </div>
 </template>
 
@@ -32,6 +37,9 @@ export default {
                         console.log(error)
                     })
             },
+            oauthpage (){
+                window.location.href = "http://localhost:8080/oauth2/authorize/naver";
+            }
        }
 }
 </script>
