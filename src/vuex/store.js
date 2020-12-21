@@ -1,11 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+
 //VUEX 사용처리
 Vue.use(Vuex)
-
-
-const resourceHost = "http://localhost:8080"
 
 export default new Vuex.Store({
     state:{
@@ -14,6 +12,13 @@ export default new Vuex.Store({
         currentUser: null
     },
     mutations:{
+        setToken(state, token){ //OAuth 인증을 통해 발급받은 토큰 저장
+            state.token = token;
+        },
+        setCurrentUser(state, contents){
+            state.currentUser = contents
+            state.authenticated = true
+        },
         setAuth(state, contents){
             state.token = contents.token;
             state.currentUser = {
@@ -35,15 +40,23 @@ export default new Vuex.Store({
         }
     },
     actions:{
-        setAuth(commit, contents){
+        setToken({commit}, token){
+            commit('setToken',token)
+        },
+
+        setCurrentUser({commit}, token){ //저장된 토큰으로 서버에 사용자 정보 요청
+            axios.get('http://localhost:8080/hi',{
+                headers : { 'Authorization': token }
+            })
+            .then( (result) => {
+                console.log(result);
+                commit('setCurrentUser', result.data.contents); 
+            })
+            .catch();
+        },
+        
+        setAuth({commit}, contents){ //DB접근 singin
             commit('setAuth',contents)
-           
-            /* return axios
-                .post('http://localhost:8080/users/signin', email, {
-                    headers : {'Content type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
-                })
-                .then( (result) => commit('setToken', result.data.contents) )
-                .catch(); */
         }
     }
 })

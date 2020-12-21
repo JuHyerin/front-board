@@ -5,10 +5,13 @@ import Posts from '@/components/Posts'
 import SignIn from '@/components/SignIn'
 import PostCreateForm from '@/components/PostCreateForm'
 import PostDetail from '@/components/PostDetail'
+import OAuth2Redirect from '@/components/OAuth2Redirect'
+
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -34,6 +37,12 @@ export default new Router({
       path: '/post-detail/:postid',
       name: 'PostDetail',
       component: PostDetail,
+      props: true
+    },
+    {
+      path: '/oauth2redirect/:token',
+      name: 'OAuth2Redirect',
+      component: OAuth2Redirect,
       props: true
     }
   ]

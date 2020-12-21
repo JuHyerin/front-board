@@ -8,7 +8,8 @@
        <div>
            <!-- <a href="http://localhost:8080/oauth2/authorize/naver">Naver</a> <br>
            <a href="http://localhost:8080/oauth2/authorize/google">Google</a> -->
-           <a @click='oauthpage'>naver</a>
+           <a @click='oauthNaverPage'>naver</a>
+           <a @click='oauthGooglePage'>google</a>
        </div>
     </div>
 </template>
@@ -37,8 +38,11 @@ export default {
                         console.log(error)
                     })
             },
-            oauthpage (){
+            oauthNaverPage (){
                 window.location.href = "http://localhost:8080/oauth2/authorize/naver";
+            },
+            oauthGooglePage (){
+                window.location.href = "http://localhost:8080/oauth2/authorize/google";
             }
        }
 }
