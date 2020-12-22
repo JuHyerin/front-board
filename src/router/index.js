@@ -6,7 +6,8 @@ import SignIn from '@/components/SignIn'
 import PostCreateForm from '@/components/PostCreateForm'
 import PostDetail from '@/components/PostDetail'
 import OAuth2Redirect from '@/components/OAuth2Redirect'
-
+import SignOut from '@/components/SignOut'
+import PostUpdate from '@/components/PostUpdate'
 
 Vue.use(Router)
 
@@ -44,6 +45,16 @@ export default new Router({
       name: 'OAuth2Redirect',
       component: OAuth2Redirect,
       props: true
+    },
+    {
+      path: '/sign-out',
+      name: 'SignOut',
+      component: SignOut
+    },
+    {
+      path: '/post-update',
+      name: 'PostUpdate',
+      component: PostUpdate
     }
   ]
 })

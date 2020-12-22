@@ -32,6 +32,7 @@ export default {
     },
     methods: {
         createPost (){
+            console.log("create")
             axios.post('http://localhost:8080/posts/create', this.form,{
                 headers: {
                     'Authorization' : this.$store.state.token

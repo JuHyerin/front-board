@@ -9,7 +9,15 @@ export default new Vuex.Store({
     state:{
         authenticated: false,
         token: null,
-        currentUser: null
+        currentUser: {
+            username: null,
+            name: null
+        },
+        existPost: {
+            postId: null,
+            title: null,
+            contents: null
+        }
     },
     mutations:{
         setToken(state, token){ //OAuth 인증을 통해 발급받은 토큰 저장
@@ -21,11 +29,17 @@ export default new Vuex.Store({
         },
         setAuth(state, contents){
             state.token = contents.token;
-            state.currentUser = {
-                email : contents.username,
+            /* state.currentUser = {
+                username : contents.username,
                 name : contents.name,
-            }
+            } */
+            state.currentUser = contents
             state.authenticated = true
+        },
+
+        setExistPost(state, post){
+            console.log(post.postId + "stored")
+            state.existPost = post
         }
     },
     getters:{
@@ -37,6 +51,10 @@ export default new Vuex.Store({
         },
         authenticated(state) {
             return state.authenticated;
+        },
+
+        existPost(state) {
+            return state.existPost;
         }
     },
     actions:{
@@ -57,6 +75,10 @@ export default new Vuex.Store({
         
         setAuth({commit}, contents){ //DB접근 singin
             commit('setAuth',contents)
+        },
+
+        setExistPost({commit}, post){ //게시물 수정 시 기존 내용 출력
+            commit('setExistPost', post)
         }
     }
 })
