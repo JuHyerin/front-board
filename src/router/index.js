@@ -12,7 +12,7 @@ import PostUpdate from '@/components/PostUpdate'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  mode: 'history', // url에 # 없애기
   routes: [
     {
       path: '/',
@@ -22,7 +22,8 @@ export default new Router({
     {
       path: '/posts',
       name: 'Posts',
-      component: Posts
+      component: Posts,
+      props: true
     },
     {
       path: '/sign-in',

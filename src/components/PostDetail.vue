@@ -22,22 +22,18 @@
 
         <div v-if="checkWriter()">
             <button @click="updatePostPage">수정</button>
-            <button @click="deletePost2">삭제</button>
-            <a href="javascript:;" @click="deletePost">삭제</a>
+            <button @click="deletePost">삭제</button>
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+import api from '@/api/post'
 
 export default {
     name: 'PostDetail',
     data: function(){
         return {
-            formPostId : {
-                postId: null
-            },
             postid: this.$route.params.postid,
             post: {
                 postId: null,
@@ -55,15 +51,12 @@ export default {
     },
     methods: {
         getPost: function(){
-            console.log("getPost")
-            axios.get('http://localhost:8080/posts/detail/'+this.postid)
-          .then((result) => {
-            console.log(result);
-            this.post = result.data.contents;
-          })
-          .catch(e => {
-            console.log('error:', e)
-          });
+          api.getPostDetail(this.postid)
+                .then((result) => {
+                    console.log("getPost")
+                    console.log(result);
+                    this.post = result.data.contents;
+                })
         },
 
         checkWriter: function() {
@@ -79,28 +72,20 @@ export default {
         },
 
         updatePostPage: function(){ 
-            console.log("update")
+            console.log("update post")
             this.$store.commit('setExistPost', this.post)
             this.$router.push("/post-update")
         },
 
         deletePost () {
-            this.formPostId.postId = this.postid
-            console.log("삭제")
-            alert("test")
-            axios.post('http://localhost:8080/posts/delete', 
-                        this.formPostId ,
-                        {headers: { 'Authorization': this.$store.state.token }}
-            )
-            .then( (result) => {
-                console.log(result)
-                this.$router.push("/posts")
-            })
-            .catch((res)=>console.log(res) );
-        },
-
-        deletePost2 :function(){
-            console.log("delete post 2")
+            
+            api.deletePost(this.postid, this.$store.state.token)
+                .then( (result) => {
+                    console.log("delete post")
+                    console.log(result)
+                    this.$router.push("/posts")
+                    alert("삭제완료")
+                })
         }
     },
 

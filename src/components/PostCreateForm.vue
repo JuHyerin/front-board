@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '@/api/post'
 export default {
     name: 'PostForm',
     data: function(){
@@ -32,22 +32,18 @@ export default {
     },
     methods: {
         createPost (){
-            console.log("create")
-            axios.post('http://localhost:8080/posts/create', this.form,{
-                headers: {
-                    'Authorization' : this.$store.state.token
-                }
-            })
-            .then(result => {
-                console.log("Success Create Post")
-                console.log(result.data.contents)
-                this.$router.push('/posts')
-            })
-            .catch(error => {
-                console.log("Error Create Post")
-                console.log(error)
-            })
-        }
+            if(!this.$store.state.authenticated){
+                alert('please signin')
+                this.$router.push('/sign-in')
+            } else {
+                api.createPost(this.form, this.$store.state.token)
+                    .then(result => {
+                            console.log("create Post")
+                            console.log(result.data.contents)
+                            this.$router.push('/posts')
+                    })
+            }
+         }
     }
     
 }

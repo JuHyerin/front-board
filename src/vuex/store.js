@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import api from '@/api/store'
 
 //VUEX 사용처리
 Vue.use(Vuex)
@@ -28,15 +28,15 @@ export default new Vuex.Store({
             state.authenticated = true
         },
         setAuth(state, contents){
-            state.token = contents.token;
-            /* state.currentUser = {
-                username : contents.username,
-                name : contents.name,
-            } */
+            state.token = contents.token
             state.currentUser = contents
             state.authenticated = true
         },
-
+        initAuth(state){
+            state.token = null
+            state.currentUser = null
+            state.authenticated = false
+        },
         setExistPost(state, post){
             console.log(post.postId + "stored")
             state.existPost = post
@@ -63,20 +63,20 @@ export default new Vuex.Store({
         },
 
         setCurrentUser({commit}, token){ //저장된 토큰으로 서버에 사용자 정보 요청
-            axios.get('http://localhost:8080/hi',{
-                headers : { 'Authorization': token }
-            })
-            .then( (result) => {
-                console.log(result);
-                commit('setCurrentUser', result.data.contents); 
-            })
-            .catch();
+            api.getUser(token)
+                .then((result) => {
+                    console.log(result)
+                    commit('setCurrentUser', result.data.contents)
+                })
         },
         
         setAuth({commit}, contents){ //DB접근 singin
             commit('setAuth',contents)
         },
 
+        initAuth({commit}){
+            commit('initAuth')
+        },
         setExistPost({commit}, post){ //게시물 수정 시 기존 내용 출력
             commit('setExistPost', post)
         }

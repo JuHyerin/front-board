@@ -6,47 +6,32 @@
            <input type="submit" value="로그인"/>
        </form>
        <div>
-           <!-- <a href="http://localhost:8080/oauth2/authorize/naver">Naver</a> <br>
-           <a href="http://localhost:8080/oauth2/authorize/google">Google</a> -->
-           <a @click='oauthNaverPage'>naver</a>
-           <a @click='oauthGooglePage'>google</a>
+           <a href="http://localhost:8080/oauth2/authorize/naver">Naver</a> <br>
+           <a href="http://localhost:8080/oauth2/authorize/google">Google</a>
        </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+import api from '@/api/user'
 export default {
-  name: 'SignIn',
-  data(){
-    return {
-        user: {
-            email:"",
-            password:""
-        }
-    }
-  },
-  methods: {
-           login () {
-                axios.post('http://localhost:8080/users/signin', this.user)
-                    .then((result) => {
-                        this.$store.commit('setAuth',result.data.contents) //동기 
-                        this.$router.push('/')
-                    })
-                    .catch(error => {
-                        console.log("Error Login")
-                        console.log(error)
-                    })
-            },
-            oauthNaverPage (){
-                window.location.href = "http://localhost:8080/oauth2/authorize/naver";
-            },
-            oauthGooglePage (){
-                window.location.href = "http://localhost:8080/oauth2/authorize/google";
+    name: 'SignIn',
+    data(){
+        return {
+            user: {
+                email:"",
+                password:""
             }
-       }
+        }
+    },
+    methods: {
+        login () {
+            api.login(this.user)
+                .then(result => {
+                    this.$store.commit('setAuth',result.data.contents) //동기 
+                    this.$router.push('/')
+                })    
+        },
+    }
 }
 </script>
-
-<style scoped>
-</style>

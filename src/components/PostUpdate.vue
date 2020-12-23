@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '@/api/post'
 export default {
     name: 'PostUpdate',
     data: function(){
@@ -34,19 +34,11 @@ export default {
     },
     methods: {
         updatePost (){
-            axios.post('http://localhost:8080/posts/update', this.form,{
-                headers: {
-                    'Authorization' : this.$store.state.token
-                }
-            })
-            .then(result => {
-                console.log("Success update Post")
-                console.log(result)
-                this.$router.push({name: 'PostDetail', params: {postid: this.form.postId}})
-            })
-            .catch(error => {
-                console.log("Error update Post")
-                console.log(error)
+            api.updatePost(this.form, this.$store.state.token)
+                .then(result => {
+                    console.log("Success update Post")
+                    console.log(result)
+                    this.$router.push({name: 'PostDetail', params: {postid: this.form.postId}})
             })
         }
     },
